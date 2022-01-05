@@ -1,9 +1,15 @@
 package com.ebsco.data.exception.handler;
 
+import com.ebsco.data.dto.ErrorDto;
+import com.ebsco.data.exception.DataFormattingException;
 import com.ebsco.data.exception.DataNotFoundException;
 import com.ebsco.data.exception.DataValidationException;
+import com.ebsco.data.exception.FullTextRequestDataNotFoundException;
+import com.ebsco.data.exception.InvalidRoleDataException;
 import com.ebsco.data.exception.ModuleDataNotFoundException;
 import com.ebsco.data.exception.URLValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,16 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import com.ebsco.data.dto.ErrorDto;
-import com.ebsco.data.exception.DataFormattingException;
-import com.ebsco.data.exception.FullTextRequestDataNotFoundException;
-import com.ebsco.data.exception.InvalidRoleDataException;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestControllerAdvice
 public class CustomnExceptionHandlers {
+  private static final Logger log= LoggerFactory.getLogger(CustomnExceptionHandlers.class);
 
 
   @ExceptionHandler(DataValidationException.class)
