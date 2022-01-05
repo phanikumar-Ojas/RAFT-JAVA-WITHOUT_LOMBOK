@@ -1,0 +1,6 @@
+com/ebsco/api/domain/controller/ModuleControllerTest.class
+com/ebsco/api/domain/controller/FullTextControllerTest.class
+com/ebsco/api/domain/controller/RaftApplicationTests.class
+com/ebsco/api/domain/controller/UserControllerTest.class
+com/ebsco/api/domain/serviceimpl/FullTextServiceImplTest.class
+com/ebsco/api/domain/controller/RolesControllerTest.class
