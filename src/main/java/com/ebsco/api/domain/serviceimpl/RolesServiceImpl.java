@@ -1,28 +1,25 @@
 package com.ebsco.api.domain.serviceimpl;
 
 import com.ebsco.api.domain.repository.RolesRepository;
+import com.ebsco.api.domain.service.RolesService;
+import com.ebsco.data.dto.ExceptionMessage;
+import com.ebsco.data.dto.Response;
 import com.ebsco.data.dto.RoleDTO;
+import com.ebsco.data.entity.Role;
 import com.ebsco.transformer.RolesTransformer;
+import com.ebsco.util.PaginationUtils;
 import java.util.List;
-
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.ebsco.data.dto.ExceptionMessage;
-import com.ebsco.data.dto.Response;
-import com.ebsco.data.entity.Role;
-import com.ebsco.api.domain.service.RolesService;
-import com.ebsco.util.PaginationUtils;
-
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class RolesServiceImpl implements RolesService {
+  private static final Logger log= LoggerFactory.getLogger(RolesServiceImpl.class);
 
 	@Autowired
 	private RolesRepository rolesRepository;

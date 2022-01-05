@@ -1,17 +1,18 @@
 package com.ebsco.api.domain.serviceimpl;
 
+import com.ebsco.api.domain.repository.PasswordUUIDRepository;
 import com.ebsco.api.domain.service.PasswordUUIDService;
 import com.ebsco.data.entity.PasswordUUIDDetails;
-import com.ebsco.api.domain.repository.PasswordUUIDRepository;
 import java.time.LocalDateTime;
 import java.util.Random;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class PasswordUUIDServiceImpl implements PasswordUUIDService {
+  private static final Logger log= LoggerFactory.getLogger(PasswordUUIDServiceImpl.class);
 
   @Autowired
   PasswordUUIDRepository passwordUUIDRepository;

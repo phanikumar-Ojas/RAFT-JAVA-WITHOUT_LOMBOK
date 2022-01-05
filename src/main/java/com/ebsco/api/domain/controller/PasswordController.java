@@ -11,7 +11,6 @@ import com.ebsco.data.entity.RefferalFileDto;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Objects;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -63,8 +62,7 @@ public class PasswordController {
   }
 
 
-  @SneakyThrows
-  private RefferalFileDto convert(RefferalsDto refferalsDto) {
+  private RefferalFileDto convert(RefferalsDto refferalsDto) throws IOException {
 
     MultipartFile multipartFile = refferalsDto.getFile();
     String name = multipartFile.getName();

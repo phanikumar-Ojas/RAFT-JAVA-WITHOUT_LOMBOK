@@ -2,17 +2,17 @@ package com.ebsco.api.domain.controller;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.ebsco.api.domain.service.UserService;
 import com.ebsco.data.dto.ExceptionMessage;
 import com.ebsco.data.dto.Response;
-import com.ebsco.data.template.UserSearchTemplate;
 import com.ebsco.data.dto.UsersDTO;
 import com.ebsco.data.entity.UserDetails;
 import com.ebsco.data.model.Login;
-import com.ebsco.api.domain.service.UserService;
-import com.ebsco.transformer.UserDetailsTransformer;
-import com.ebsco.util.ResetPasswordDto;
+import com.ebsco.data.template.UserSearchTemplate;
 import com.ebsco.data.validation.DtoValidationUtils;
 import com.ebsco.data.validation.DtoValidationUtils.Optionality;
+import com.ebsco.transformer.UserDetailsTransformer;
+import com.ebsco.data.dto.ResetPasswordDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,7 +21,8 @@ import io.swagger.annotations.ApiResponses;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "This Controller is used to perform  User Related Operations", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
-@Slf4j
 @RestController
 @RequestMapping("raft/userServices")
 public class UserController {
 
-	@Autowired
+  private static final Logger log= LoggerFactory.getLogger(UserController.class);
+
+  @Autowired
 	UserService service;
 
 	@PostMapping(value = "/login")
@@ -57,7 +59,7 @@ public class UserController {
 //		Response response = new Response(ExceptionMessage.OK, UserDetailsTransformer.fromEntityToDto(value));
 		return ResponseEntity.ok(UserDetailsTransformer.fromEntityToDto(value));
 	}
-	
+
 
 	//20210920 Venkat Manage Button User Creation Service
 

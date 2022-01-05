@@ -6,19 +6,19 @@ import static com.ebsco.constants.EbescoConstants.PUBMED_FT_URL;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.ebsco.api.domain.repository.FullTextRepository;
+import com.ebsco.api.domain.repository.UserRepository;
 import com.ebsco.api.domain.service.FullTextService;
 import com.ebsco.api.domain.service.FullTextUtilService;
+import com.ebsco.api.domain.service.HttpReaderService;
 import com.ebsco.api.domain.service.HttpService;
 import com.ebsco.data.dto.ExceptionMessage;
 import com.ebsco.data.dto.FullTextRequestDto;
 import com.ebsco.data.dto.FullTextRequestDtoList;
 import com.ebsco.data.dto.FullTextRsponseDto;
-import com.ebsco.data.template.FullTextSearchTemplate;
 import com.ebsco.data.dto.Response;
 import com.ebsco.data.entity.FullTextRequest;
 import com.ebsco.data.exception.FullTextRequestDataNotFoundException;
-import com.ebsco.api.domain.repository.UserRepository;
-import com.ebsco.api.domain.service.HttpReaderService;
+import com.ebsco.data.template.FullTextSearchTemplate;
 import com.ebsco.transformer.FullTextTransformer;
 import com.ebsco.util.PaginationUtils;
 import com.google.common.collect.Lists;
@@ -27,17 +27,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 @Service
-@Slf4j
 public class FullTextServiceImpl implements FullTextService {
+  private static final Logger log= LoggerFactory.getLogger(FullTextServiceImpl.class);
+
 
   @Autowired
   FullTextRepository reposistory;

@@ -6,28 +6,30 @@ import static com.ebsco.constants.EbescoConstants.OPEN_FREE_FULL_TEXT;
 import static com.ebsco.constants.EbescoConstants.PMID_FREE_ARTICLE_INSTRUCTIONS_PDF_DOWNLOAD;
 import static com.ebsco.constants.EbescoConstants.REQUEST_FULL_TEXT;
 
-import com.ebsco.data.entity.FullTextRequest;
 import com.ebsco.api.domain.service.HttpReaderService;
 import com.ebsco.api.domain.service.HttpService;
+import com.ebsco.data.entity.FullTextRequest;
 import com.ebsco.data.validation.StringDataValidator;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class HttpReaderServiceImpl implements HttpReaderService {
+  private static final Logger log= LoggerFactory.getLogger(HttpReaderServiceImpl.class);
+
 
   @Autowired
   private HttpService httpService;

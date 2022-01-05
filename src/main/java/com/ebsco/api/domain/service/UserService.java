@@ -1,7 +1,7 @@
 package com.ebsco.api.domain.service;
 
 import com.ebsco.data.template.UserSearchTemplate;
-import com.ebsco.util.ResetPasswordDto;
+import com.ebsco.data.dto.ResetPasswordDto;
 import java.util.Optional;
 
 import com.ebsco.data.dto.Response;

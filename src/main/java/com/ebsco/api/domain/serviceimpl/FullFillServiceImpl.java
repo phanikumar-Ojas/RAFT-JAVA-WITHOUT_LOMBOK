@@ -2,30 +2,31 @@ package com.ebsco.api.domain.serviceimpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.ebsco.api.domain.repository.FullFillRepository;
 import com.ebsco.api.domain.service.FullFillService;
 import com.ebsco.data.dto.ExceptionMessage;
-import com.ebsco.data.template.FullFillSearchTemplate;
 import com.ebsco.data.dto.FullTextRequestDto;
 import com.ebsco.data.dto.Response;
 import com.ebsco.data.entity.FullTextRequest;
-import com.ebsco.api.domain.repository.FullFillRepository;
+import com.ebsco.data.template.FullFillSearchTemplate;
 import com.ebsco.data.validation.DtoValidationUtils;
 import com.ebsco.transformer.FullTextTransformer;
 import com.ebsco.util.PaginationUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.internal.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 @Service
-@Slf4j
 public class FullFillServiceImpl implements FullFillService {
+  private static final Logger log= LoggerFactory.getLogger(FullFillServiceImpl.class);
+
 
   @Autowired
   private FullFillRepository fullFillRepository;

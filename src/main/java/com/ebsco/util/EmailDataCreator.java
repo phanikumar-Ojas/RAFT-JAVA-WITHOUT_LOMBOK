@@ -5,11 +5,12 @@ import static com.ebsco.constants.EbescoConstants.MAIL_SUBJECT_RAFT_RESET_PASSWO
 
 import com.ebsco.data.dto.EmailDetails;
 import com.ebsco.data.entity.UserDetails;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class EmailDataCreator {
 
+  private static final Logger log= LoggerFactory.getLogger(EmailDataCreator.class);
 
   public static EmailDetails createEmailDetails(UserDetails userDetails, String generatedUUID,
     String url) {

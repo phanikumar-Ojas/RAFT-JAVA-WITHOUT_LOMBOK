@@ -2,8 +2,8 @@ package com.ebsco.api.domain.serviceimpl;
 
 import com.ebsco.api.domain.service.EmailService;
 import com.ebsco.data.dto.EmailDetails;
-import com.ebsco.util.ReadPropertiesFile;
 import com.ebsco.data.validation.DtoValidationUtils;
+import com.ebsco.util.ReadPropertiesFile;
 import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.Message.RecipientType;
@@ -12,12 +12,13 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service("v1EmailServiceImpl")
-@Slf4j
 public class V1EmailServiceImpll implements EmailService {
+  private static final Logger log= LoggerFactory.getLogger(V1EmailServiceImpll.class);
 
   private static MimeMessage mimeMessage = null;
 

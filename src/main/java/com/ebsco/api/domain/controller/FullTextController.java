@@ -1,13 +1,10 @@
 package com.ebsco.api.domain.controller;
 
-import com.ebsco.api.domain.service.FileDownloadService;
 import com.ebsco.api.domain.service.FullTextService;
 import com.ebsco.api.domain.service.FullTextUtilService;
-import com.ebsco.api.domain.serviceimpl.FileDownloadServiceImpl;
 import com.ebsco.data.dto.ExceptionMessage;
 import com.ebsco.data.dto.FullTextRequestDto;
 import com.ebsco.data.dto.FullTextRequestDtoList;
-import com.ebsco.data.dto.GridDataDto;
 import com.ebsco.data.dto.Response;
 import com.ebsco.data.entity.FullTextRequest;
 import com.ebsco.data.model.FullTextRequests;
@@ -25,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,10 +44,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "This Controller is used for the fullText service Operations", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
-@Slf4j
 @RestController
 @RequestMapping(value = {"raft/fulltext"})
 public class FullTextController {
+ private static final Logger log= LoggerFactory.getLogger(FullTextController.class);
 
   @Autowired
   FullTextService service;

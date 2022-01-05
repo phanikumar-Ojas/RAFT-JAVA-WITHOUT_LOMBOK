@@ -4,9 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.ebsco.data.dto.FullTextRequestDto;
 import com.ebsco.data.entity.FullTextRequest;
-import lombok.Data;
 
-@Data
 public class FullTextTransformer {
 
 
@@ -92,8 +90,5 @@ public class FullTextTransformer {
 
   }
 
-  protected boolean canEqual(final Object other) {
-    return other instanceof FullTextTransformer;
-  }
 
 }

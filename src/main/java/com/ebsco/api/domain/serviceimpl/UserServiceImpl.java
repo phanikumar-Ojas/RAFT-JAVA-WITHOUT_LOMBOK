@@ -2,28 +2,29 @@ package com.ebsco.api.domain.serviceimpl;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import com.ebsco.api.domain.repository.UserRepository;
 import com.ebsco.api.domain.service.EmailService;
 import com.ebsco.api.domain.service.PasswordUUIDService;
+import com.ebsco.api.domain.service.UserService;
 import com.ebsco.data.dto.EmailDetails;
 import com.ebsco.data.dto.ExceptionMessage;
 import com.ebsco.data.dto.Response;
-import com.ebsco.data.template.UserSearchTemplate;
-import com.ebsco.data.entity.UserDetails;
 import com.ebsco.data.entity.PasswordUUIDDetails;
-import com.ebsco.api.domain.repository.UserRepository;
-import com.ebsco.api.domain.service.UserService;
+import com.ebsco.data.entity.UserDetails;
+import com.ebsco.data.template.UserSearchTemplate;
+import com.ebsco.data.validation.StringDataValidator;
 import com.ebsco.util.EmailDataCreator;
 import com.ebsco.util.LocalDateTimeUtils;
 import com.ebsco.util.PaginationUtils;
-import com.ebsco.util.ResetPasswordDto;
-import com.ebsco.data.validation.StringDataValidator;
+import com.ebsco.data.dto.ResetPasswordDto;
 import com.google.common.base.Strings;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +32,8 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class UserServiceImpl implements UserService {
+  private static final Logger log= LoggerFactory.getLogger(UserServiceImpl.class);
 
   @Autowired
   UserRepository repository;
