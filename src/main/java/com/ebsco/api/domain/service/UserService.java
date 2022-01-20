@@ -2,6 +2,7 @@ package com.ebsco.api.domain.service;
 
 import com.ebsco.data.template.UserSearchTemplate;
 import com.ebsco.data.dto.ResetPasswordDto;
+import java.util.List;
 import java.util.Optional;
 
 import com.ebsco.data.dto.Response;
@@ -23,5 +24,10 @@ public interface UserService {
   Response forgotPassword(@NotNull String email);
 
   Response updatePassword(ResetPasswordDto resetPasswordDto);
+
+  List<UserDetails> findAllUsers();
+
+  void deleteUserById(Integer userId);
+
 
 }

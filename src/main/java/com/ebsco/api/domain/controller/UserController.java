@@ -1,5 +1,6 @@
 package com.ebsco.api.domain.controller;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.ebsco.api.domain.service.UserService;
@@ -21,12 +22,14 @@ import io.swagger.annotations.ApiResponses;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,27 +44,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("raft/userServices")
 public class UserController {
 
-  private static final Logger log= LoggerFactory.getLogger(UserController.class);
+  private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
   @Autowired
-	UserService service;
+  UserService service;
 
-	@PostMapping(value = "/login")
-	@ApiOperation(consumes = "application/json", value = "Login service")
-	public ResponseEntity<?> login(@Valid @NotNull @RequestBody Login login) {
-		DtoValidationUtils.validateLogin(login);
-		UserDetails value = null;
-		value = service.findByUserNameAndPassword(login.getUserName(), login.getPassword());
+  @PostMapping(value = "/login")
+  @ApiOperation(consumes = "application/json", value = "Login service")
+  public ResponseEntity<?> login(@Valid @NotNull @RequestBody Login login) {
+    DtoValidationUtils.validateLogin(login);
+    UserDetails value = null;
+    value = service.findByUserNameAndPassword(login.getUserName(), login.getPassword());
 
-		if (Objects.isNull(value)) {
+    if (Objects.isNull(value)) {
       return ResponseEntity.badRequest().body(Response.builder().res("User Not found").build());
     }
 //		Response response = new Response(ExceptionMessage.OK, UserDetailsTransformer.fromEntityToDto(value));
-		return ResponseEntity.ok(UserDetailsTransformer.fromEntityToDto(value));
-	}
+    return ResponseEntity.ok(UserDetailsTransformer.fromEntityToDto(value));
+  }
 
-
-	//20210920 Venkat Manage Button User Creation Service
+  //20210920 Venkat Manage Button User Creation Service
 
   @ApiResponses(value = {
     @ApiResponse(code = 400, message = "User Not Saved beacuase of Bad Request"),
@@ -100,5 +102,29 @@ public class UserController {
 
   }
 
+  @GetMapping("/findAll")
+  @ApiOperation(produces = "application/json", value = "This is to get all users")
+  public Response findAllUsers() {
+    try {
+      return Response.builder().status(ExceptionMessage.OK).result(service.findAllUsers()).build();
+    } catch (Exception exception) {
+      return Response.builder().status(ExceptionMessage.Exception).res(exception.getMessage())
+        .build();
+    }
+  }
+
+  @DeleteMapping("/delete/{userId}")
+  @ApiOperation(value = "This is to delete the userDetails based on th given userId")
+  public Response deleteUserByUserId(@PathVariable Integer userId) {
+    checkArgument(userId != null && userId > 0, "userId must be a valid number");
+    try {
+      service.deleteUserById(userId);
+      return Response.builder().status(ExceptionMessage.OK)
+        .res(String.format("user deleted with the id:%d", userId)).build();
+    } catch (Exception exception) {
+      return Response.builder().status(ExceptionMessage.Exception).res(exception.getMessage())
+        .build();
+    }
+  }
 
 }

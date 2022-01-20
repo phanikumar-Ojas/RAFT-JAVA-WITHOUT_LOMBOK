@@ -1,13 +1,11 @@
 package com.ebsco.api.domain.service;
 
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import com.ebsco.data.dto.ModuleDTO;
 import com.ebsco.data.dto.Response;
 import com.ebsco.data.entity.Module;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 public interface ModuleService {
 
@@ -20,5 +18,7 @@ public interface ModuleService {
 	void deleteModuleById(@NotNull Integer moduleId);
 
 	List<Module> getModulesByParentIds(@Valid List<Integer> parentIds);
+
+  List<Module> getAllModules();
 
 }

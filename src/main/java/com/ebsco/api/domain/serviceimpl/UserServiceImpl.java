@@ -33,7 +33,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-  private static final Logger log= LoggerFactory.getLogger(UserServiceImpl.class);
+
+  private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
   @Autowired
   UserRepository repository;
@@ -43,17 +44,13 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   PasswordUUIDService passwordUUIDService;
-
-  @Value("${application.password.expiry.time}")
-  private String expiryTime;
-
-  @Value("${application.password.forgotpassword.url}")
-  private String url;
-
   @Qualifier("v1EmailServiceImpl")
   @Autowired
   EmailService emailService;
-
+  @Value("${application.password.expiry.time}")
+  private String expiryTime;
+  @Value("${application.password.forgotpassword.url}")
+  private String url;
 
   @Override
   public UserDetails save(UserDetails user) {
@@ -188,6 +185,20 @@ public class UserServiceImpl implements UserService {
     return Response.builder()
       .res("Some Other error occurred while updating the Password so data not saved")
       .status(ExceptionMessage.DataIsNotSaved).build();
+  }
+
+  @Override
+  public List<UserDetails> findAllUsers() {
+    return repository.findAll();
+  }
+
+  @Override
+  public void deleteUserById(Integer userId) {
+    checkArgument(userId != null && userId > 0, "userId must be a valid number");
+    Optional<UserDetails> byId = repository.findById(userId);
+    if (byId.isPresent()) {
+      repository.deleteById(userId);
+    }
   }
 
 }

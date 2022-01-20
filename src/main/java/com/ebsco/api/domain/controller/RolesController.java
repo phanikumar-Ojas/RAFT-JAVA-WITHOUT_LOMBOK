@@ -1,5 +1,8 @@
 package com.ebsco.api.domain.controller;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+import com.ebsco.data.dto.ExceptionMessage;
 import com.ebsco.data.template.RolesSearchTemplate;
 import java.net.URI;
 
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +45,7 @@ public class RolesController {
   private RolesService rolesService;
 
   //23092021 Venkat Role Save Service
-  
+
   @PostMapping("/save")
   @ApiOperation(value = "This end point is used to save or update a record for role in DB")
   @ApiResponses(value = {
@@ -59,8 +63,8 @@ public class RolesController {
     return ResponseEntity.created(URI.create("/raft/roles/save")).body(response);
 
   }
-  
-  
+
+
   //23092021 Venkat Role Fetch Service
 
   @ApiOperation(value = "This is to retrieve the role based on the given roleID")
@@ -78,8 +82,8 @@ public class RolesController {
     }
 
   }
-  
-  
+
+
   //23092021 Venkat Fetch All Roles Service based on Pagination
 
   @PostMapping(value = {"search", "/v1/search"})
@@ -96,6 +100,20 @@ public class RolesController {
     response = rolesService.findAll(searchTemplate.getPageSize(), searchTemplate.getPageNumber());
     return ResponseEntity.ok(response);
 
+  }
+
+  @DeleteMapping("/delete/{roleId}")
+  @ApiOperation(value = "This is to delete the Role Details based on th given roleId")
+  public Response deleteRoleByRoleId(@PathVariable Integer roleId) {
+    checkArgument(roleId != null && roleId > 0, "roleId must be a valid number");
+    try {
+      rolesService.deleteRoleById(roleId);
+      return Response.builder().status(ExceptionMessage.OK)
+        .res(String.format("role deleted with the id:%d", roleId)).build();
+    } catch (Exception exception) {
+      return Response.builder().status(ExceptionMessage.Exception).res(exception.getMessage())
+        .build();
+    }
   }
 
 }

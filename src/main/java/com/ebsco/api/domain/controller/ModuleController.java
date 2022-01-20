@@ -1,6 +1,9 @@
 package com.ebsco.api.domain.controller;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.ebsco.api.domain.service.ModuleService;
+import com.ebsco.data.dto.ExceptionMessage;
 import com.ebsco.data.template.ModuleSearchTemplate;
 import java.net.URI;
 import java.util.List;
@@ -14,6 +17,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,8 +59,7 @@ public class ModuleController {
     @NotNull @RequestBody ModuleSearchTemplate searchTemplate) {
 
     DtoValidationUtils.validateModuleSearch(searchTemplate);
-    Response response = Response.builder().build();
-    response = moduleService
+    Response response = moduleService
       .getAllModules(searchTemplate.getPageSize(), searchTemplate.getPageNumber());
 //			rabbitMQSender.send(response);
     if (Objects.nonNull(response.getResult())) {
@@ -88,6 +93,31 @@ public class ModuleController {
   @PostMapping("/byParentIds")
   public ResponseEntity<?> getModulesByParentIds(@RequestBody @Valid List<Integer> parentIds) {
     return ResponseEntity.ok(moduleService.getModulesByParentIds(parentIds));
+  }
+
+  @DeleteMapping("/delete/{moduleId}")
+  public Response deleteModuleById(@PathVariable Integer moduleId) {
+    checkArgument(moduleId != null && moduleId > 0, "moduleId must be a valid number");
+    try {
+      moduleService.deleteModuleById(moduleId);
+      return Response.builder().status(ExceptionMessage.OK)
+        .res(String.format("modue deleted with the id:%d", moduleId)).build();
+    } catch (Exception exception) {
+      return Response.builder().status(ExceptionMessage.Exception).res(exception.getMessage())
+        .build();
+    }
+  }
+
+  @GetMapping("/findAll")
+  @ApiOperation(value = "this service is used to find all the module details.")
+  public Response findAll() {
+    try {
+      List<Module> allModules = moduleService.getAllModules();
+      return Response.builder().status(ExceptionMessage.OK).result(allModules).build();
+    } catch (Exception exception) {
+      return Response.builder().status(ExceptionMessage.Exception).res(exception.getMessage())
+        .build();
+    }
   }
 
 }
