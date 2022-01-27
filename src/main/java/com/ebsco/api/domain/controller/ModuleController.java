@@ -1,5 +1,7 @@
 package com.ebsco.api.domain.controller;
 
+import static com.ebsco.constants.EbescoConstants.MODULE_CHILD;
+import static com.ebsco.constants.EbescoConstants.MODULE_PARENT;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.ebsco.api.domain.service.ModuleService;
@@ -9,9 +11,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -108,16 +112,34 @@ public class ModuleController {
     }
   }
 
-  @GetMapping("/findAll")
+  @GetMapping("/findAll/{fetchType}")
   @ApiOperation(value = "this service is used to find all the module details.")
-  public Response findAll() {
+  public Response findAll(@PathVariable String fetchType) {
     try {
       List<Module> allModules = moduleService.getAllModules();
-      return Response.builder().status(ExceptionMessage.OK).result(allModules).build();
+      return Response.builder().status(ExceptionMessage.OK)
+        .result(getModulesByFetchType(fetchType, allModules)).build();
     } catch (Exception exception) {
       return Response.builder().status(ExceptionMessage.Exception).res(exception.getMessage())
         .build();
     }
+  }
+
+  private List<Module> getModulesByFetchType(String fetchType, List<Module> modules) {
+    checkArgument(StringUtils.isNotBlank(fetchType),
+      "fetchType required but found null or empty or blank");
+    checkArgument(modules != null && !modules.isEmpty(),
+      "modules required but found null or empty");
+    if (fetchType.equalsIgnoreCase(MODULE_CHILD)) {
+      return modules.stream().filter(module -> module.getParentId() != null)
+        .collect(Collectors.toList());
+    } else if (fetchType.equalsIgnoreCase(MODULE_PARENT)) {
+      return modules.stream().filter(module -> module.getParentId() == null)
+        .collect(Collectors.toList());
+    } else {
+      throw new RuntimeException(String.format("Invalid module fetching type: %s", fetchType));
+    }
+
   }
 
 }

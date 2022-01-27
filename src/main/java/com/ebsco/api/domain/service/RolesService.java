@@ -1,5 +1,6 @@
 package com.ebsco.api.domain.service;
 
+import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.ebsco.data.dto.Response;
@@ -15,4 +16,5 @@ public interface RolesService {
 
   void deleteRoleById(Integer roleId);
 
+  List<Role> getAllRoles();
 }

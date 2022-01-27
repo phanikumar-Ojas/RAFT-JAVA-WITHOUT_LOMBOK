@@ -3,9 +3,11 @@ package com.ebsco.api.domain.controller;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.ebsco.data.dto.ExceptionMessage;
+import com.ebsco.data.entity.Module;
 import com.ebsco.data.template.RolesSearchTemplate;
 import java.net.URI;
 
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -115,5 +117,18 @@ public class RolesController {
         .build();
     }
   }
+
+  @GetMapping("/findAll")
+  @ApiOperation(value = "this service is used to find all the role details.")
+  public Response findAll() {
+    try {
+      List<Role> allRoles = rolesService.getAllRoles();
+      return Response.builder().status(ExceptionMessage.OK).result(allRoles).build();
+    } catch (Exception exception) {
+      return Response.builder().status(ExceptionMessage.Exception).res(exception.getMessage())
+        .build();
+    }
+  }
+
 
 }

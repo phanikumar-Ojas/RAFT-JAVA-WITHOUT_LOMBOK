@@ -5,9 +5,12 @@ import com.ebsco.api.domain.service.ModuleService;
 import java.util.List;
 import java.util.Objects;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ import com.ebsco.data.validation.DtoValidationUtils.Optionality;
 
 @Service(value = "v1ModuleServiceImpl")
 public class ModuleServiceImpl implements ModuleService {
+
+  Logger logger= LoggerFactory.getLogger(ModuleServiceImpl.class);
 
   @Autowired
   private ModuleRepository moduleRepository;
@@ -66,13 +71,21 @@ public class ModuleServiceImpl implements ModuleService {
   }
 
   @Override
+  @Transactional(rollbackOn = Exception.class)
   public void deleteModuleById(@NotNull Integer moduleId) {
 
     DtoValidationUtils.validate(moduleId, Optionality.REQUIRED);
-    if (getModuleById(moduleId) != null) {
-      moduleRepository.deleteById(moduleId);
+    try {
+      if (getModuleById(moduleId) != null) {
+        // deleting role realted rows based on moduleId.
+        moduleRepository.deleteModulesInRoles(moduleId);
+        // deleting module based on moduleId.
+        moduleRepository.deleteById(moduleId);
+      }
+    } catch (Exception e) {
+      logger.debug(e.getMessage());
+      throw new RuntimeException(e.getMessage());
     }
-
   }
 
   @Override

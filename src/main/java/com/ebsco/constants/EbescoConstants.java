@@ -32,6 +32,10 @@ public interface EbescoConstants {
   String NOT_REQUIRED = "Not Required";
   String IN_PROGRESS = "In Progress";
 
+  // Module Fetching constants.
+  String MODULE_PARENT="parent";
+  String MODULE_CHILD="child";
+
   // for checking eHostFtLink
   String PDF_FULL_TEXT = "PDF Full Text";
 

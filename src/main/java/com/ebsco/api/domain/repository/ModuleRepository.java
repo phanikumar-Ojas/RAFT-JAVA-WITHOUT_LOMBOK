@@ -5,7 +5,9 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ebsco.data.entity.Module;
@@ -34,4 +36,8 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
 
 	@Query(value = "select * from modules where parentId in (CASE WHEN :parentIds IS NOT NULL THEN :parentIds END)", nativeQuery = true)
 	List<Module> findNodulesByParentId(List<Integer> parentIds);
+
+  @Modifying
+  @Query(value = "delete from rolemodules where ModuleId=:moduleId",nativeQuery = true)
+  void deleteModulesInRoles(@Param("moduleId") Integer moduleId);
 }
